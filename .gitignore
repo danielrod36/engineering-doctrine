@@ -1,0 +1,3 @@
+# Ignore nothing that ships. This repo is a template whose whole contents are the artifact.
+.DS_Store
+*.swp
