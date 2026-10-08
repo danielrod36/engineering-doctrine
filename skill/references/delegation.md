@@ -5,6 +5,10 @@ result is verifiable. The failure modes are shared: lanes that touch the same fi
 each other's work, lanes given vague briefs produce plausible work that cannot be checked, and
 lane results are *claims* until proven.
 
+Crash, checkpoint, and channel mechanics differ per agent harness; the portable rules below
+apply everywhere, and [`harness/`](harness/) carries the per-harness specifics. Read the file
+for the harness you are running in before fanning out.
+
 ## Before spawning
 
 1. **Map the slices and the shared contract.** Name every file, symbol, and interface each
@@ -34,16 +38,13 @@ requirement omits it entirely.
 
 ## Working rules
 
-- **One writer per file/module/worktree.** Never let two lanes edit the same tree. Coordinate
-  live lanes through short messages; appoint a single integration owner for shared edits.
-- **Checkpoint to disk.** Subagents typically run **in-process**: a crash, a kill, or a reboot
-  stops every lane at once, and the only thing that survives is **what was written to files,
-  branches, and worktrees**. Commit early and often inside a lane so interrupted work is
-  recoverable rather than lost.
-- **After any interruption** (reboot, crash, timeout), **inspect the worktrees before
-  restarting**. A killed lane usually leaves uncommitted work — captures, drafts, partial
-  commits — and redoing it may cost a long replay. Read *what is already on disk* and continue
-  from there rather than from scratch.
+- **One writer per file/module/worktree.** Never let two lanes edit the same tree; appoint a
+  single integration owner for shared edits.
+- **Checkpoint and recovery semantics are harness-specific.** Read the harness file that
+  matches the agent you run in — [`harness/claude-code.md`](harness/claude-code.md) or
+  [`harness/omp.md`](harness/omp.md). If yours is not there, the portable rule still holds:
+  only work written to files, branches, and worktrees survives an interruption, so commit
+  inside lanes, and inspect what is on disk before restarting a killed one.
 - **Skip the full build/lint/test inside each lane.** Run it **once** after integration. Per-
   edit full gates burn the time the fan-out was meant to save.
 - **Verify lane output; do not trust the report.** A lane reporting "done" or "proven" is a

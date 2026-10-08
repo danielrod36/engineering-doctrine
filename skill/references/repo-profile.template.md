@@ -5,7 +5,10 @@
 > placeholder. **Do not act on an unverified entry.** While this banner is present, treat
 > every command as `UNVERIFIED` and verify before use.
 
-Filled by: `<who> · <YYYY-MM-DD> · at commit <sha>`
+Filled by: `<who> · <YYYY-MM-DD>`
+
+Pinned at commit: `<sha>` · `<YYYY-MM-DD>` — entries are trusted while HEAD matches this
+pin; `check.sh` compares them, and a pin outside this repository's history fails the check.
 
 ## 1. The repository's own rules (these win)
 
@@ -44,6 +47,8 @@ Filled by: `<who> · <YYYY-MM-DD> · at commit <sha>`
 | Schema / migration check | `<…>` | — | `<…>` | `<…>` |
 
 - **Gates that cannot fail** (found during Reconcile): `<list, or "none found">`
+- Record / plan validator grammar (if the repo has one): `<the exact item grammar it
+  parses — discovered, never invented; "none" is a valid answer>`
 
 ## 5. Branch, commit, release
 

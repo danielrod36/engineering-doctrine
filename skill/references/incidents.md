@@ -7,6 +7,12 @@ on faith. Names and paths are generalized; the mechanism is what matters.
 Read this when a rule looks arbitrary, or before you weaken one. If you weaken a rule, add
 the incident that justifies it — or you will rediscover the original one.
 
+Four principles — **3** (reproduce before you fix; revert to prove the fix), **4** (fix the
+cause, consolidate rather than duplicate), **9** (finish properly, in the same change), and
+**10** (the report is honest about the work) — predate this record. They are carried as the
+**only** rules not backed by a recorded incident. The first time one of them fails to hold,
+the incident that results goes here and the exception ends.
+
 ---
 
 ## The gate on the left of a pipe (`verification` §gates, `delivery` §merging)

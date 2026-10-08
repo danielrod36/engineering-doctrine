@@ -59,15 +59,16 @@ Then verify, and land through the repository's gate — see [`delivery.md`](deli
 
 ## Phase C — The arc
 
-**The report must be discoverable.** Most repos with a record system parse items from a
-report file at a known path. A report named wrong, or whose findings are prose, is invisible:
-the validator reports "consistent" because it found no items to check. Confirm the gate names
-your file *and a count* before trusting it.
+**The report must be discoverable by whatever validates it.** A report at the wrong path, or
+whose findings are prose, is invisible: the validator reports "consistent" because it found
+no items to check. Confirm the gate names your file *and a count* before trusting it.
 
-**Items use an exact grammar**, and the validator ignores anything else — an open box, a
-closed box with a **dated** resolution, an optional declared order suffix, and the item body
-indented beneath it as its brief. Check the repository's grammar in the profile; do not invent
-one.
+**The item grammar is the repository's, discovered by Reconcile and recorded in the
+profile.** Use exactly what the profile records — its open/closed convention, its dating,
+its ordering suffix — and never invent one; a validator that ignores your grammar is a gate
+that cannot see its input. If the profile says the repository has no record system, the arc
+lands in the repository's own tracker instead — and "tracked" means a place with a queryable
+status field, not a prose section of the report.
 
 **Every item must be a decision or a build, never "tidy this".** A finding worth an item is one
 that will keep producing defects until somebody chooses. Order by dependency: work that changes

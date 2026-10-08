@@ -18,22 +18,36 @@ The portable discipline: **check before acting, prove before claiming, enforce w
 paragraphs, fix the cause not the instance, and inspect the evidence itself.**
 
 Every rule here was paid for by a real defect. [`references/incidents.md`](references/incidents.md)
-is the annex that records them; read it when you doubt a rule, or before weakening one.
+is the annex that records them; read it when you doubt a rule, or before weakening one. Four
+principles — 3, 4, 9, and 10 — predate the record; the annex carries them as its only
+exceptions.
 
 ## Step 0 — Reconcile, always
 
 **Before doing anything else in a repository, establish what that repository actually is.**
 Do not assume any command, path, gate, or convention. Find them.
 
-1. Read [`references/repo-profile.md`](references/repo-profile.md). If it is still the stub, or
-   if it describes a repository you are not in, or if any line in it is marked `UNVERIFIED`,
-   **run [`references/reconcile.md`](references/reconcile.md) now** and write the profile.
+1. Read the repository profile (in a copy-in install it is
+   [`references/repo-profile.md`](references/repo-profile.md) inside the skill; in a global
+   install it lives keyed by repository path — [`references/reconcile.md`](references/reconcile.md)
+   names both locations). If it is still the stub, or it describes a repository you are not
+   in, or the entry you need is `UNVERIFIED`, **run
+   [`references/reconcile.md`](references/reconcile.md) now** and write the profile.
 2. Read the repository's own rules first — `AGENTS.md`, `CLAUDE.md`, `CONTRIBUTING.md`, its
-   `docs/`, its existing skills. **They win.** This skill supplies method and fills gaps; it
-   never overrides a repository's stated convention. When they conflict, the repository is
-   right by definition and this skill is what needs reconciling — record the conflict in the
-   profile rather than silently preferring either.
-3. Only then act, using the commands the profile names — not the ones this skill happens to
+   `docs/`, its existing skills. **They win, with a floor.** The repository's conventions,
+   commands, and formats override this skill's habits; when they conflict, record the
+   conflict in the profile rather than silently preferring either side. But three articles
+   no repository can override: **the evidence bar** (no claim passes as verified without the
+   run that produced it), **no bypassing a gate to land a change** (if the gate is wrong,
+   fix it in a separate, reviewed change), and **no false records** (never record a
+   verification, inspection, or resolution that did not happen). A repository whose rules
+   demand one of those gets the conflict surfaced, not obeyed.
+3. Profiles are **commit-pinned and gated.** The profile records the commit its entries were
+   verified at; entries are trusted while HEAD matches that pin, and when HEAD has moved you
+   re-verify the entries you are about to rely on — not the whole profile, not nothing.
+   `check.sh`, installed alongside this skill, enforces the profile's state: run it from the
+   repository root; a reconciliation is not finished until it exits 0.
+4. Only then act, using the commands the profile names — not the ones this skill happens to
    know from another project.
 
 If you skip Step 0 you are about to make claims about a codebase you have not read, which is
@@ -97,6 +111,7 @@ and do not act from the summary above alone.
 | First use in a repo, or the repo changed underneath you | [`references/reconcile.md`](references/reconcile.md) |
 | Verifying a claim, proving a fix, "is this actually working" | [`references/verification.md`](references/verification.md) |
 | Slicing work, spawning subagents, converging parallel lanes | [`references/delegation.md`](references/delegation.md) |
+| Running lanes through a specific agent harness (crash, checkpoint, channels) | [`references/harness/`](references/harness) |
 | Auditing a subsystem, turning findings into tracked work | [`references/audit-and-arc.md`](references/audit-and-arc.md) |
 | PR review, merge gating, releases, migrations | [`references/delivery.md`](references/delivery.md) |
 | Anything whose answer depends on the machine (containers, runtimes, auth) | [`references/environment.md`](references/environment.md) |

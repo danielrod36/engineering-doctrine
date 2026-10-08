@@ -13,6 +13,26 @@ The rule that governs the whole step: **record what you found, mark what you cou
 determine `UNVERIFIED`, and never fill a field with the answer that happens to be true in
 another repository.**
 
+## Where the profile lives
+
+Two install modes, two locations — never one shared slot:
+
+- **Copy-in install (default):** the skill and its profile live inside the repository, at
+  `<repo>/<skills-dir>/engineering-doctrine/references/repo-profile.md`. **The profile is
+  committed** — it is the repository's own discovered knowledge, and a fresh clone that has
+  to re-derive it learned nothing. Profile updates ride along with the work that discovered
+  them.
+- **Global install (`--global`):** the doctrine lives once at the user level; each
+  repository's profile lives under it at
+  `<user-skills>/engineering-doctrine/profiles/<repo path with / replaced by _>/repo-profile.md`.
+  The key is the repository's absolute path, so switching repositories selects the right
+  profile instead of clobbering another repository's knowledge.
+
+Whichever mode, `check.sh` (installed alongside the skill) resolves the profile for the
+repository you are in and gates its state: a stub profile, unfilled placeholders, a missing
+commit pin, or a pin outside the repository's history all fail. Run it from the repository
+root; Reconcile is not finished until it exits 0.
+
 ## What to probe, and what to record
 
 Work through these in order. For each, run a command, look at a file, or ask — do not guess.
@@ -56,7 +76,10 @@ This is the highest-value part of Reconcile. Find every automated check and answ
 - Is there a **review bot** or external reviewer? How are its threads resolved and how does
   the gate see that they are?
 - Is there an **audit/record validator**, a **docs-link checker**, a **schema-drift check**,
-  a **migration replay check**? Record the command and what makes each one go red.
+  a **migration replay check**? Record the command and what makes each one go red. For a
+  record validator, also record its **exact item grammar** — the open/closed convention, its
+  dating, its ordering suffix — in the profile; the arc phase reads it from there and never
+  invents one.
 - **Record for each gate:** command, trigger, failure message shape, and **whether the gate's
   exit status is read directly or can be swallowed** (a pipe, a `|| true`, a `continue-on-error`).
   A gate that cannot fail is not a gate; if you find one, that is a finding to report now.
@@ -94,6 +117,8 @@ Write [`repo-profile.md`](repo-profile.md) from the template. Rules:
 
 - Every command carries its verification status. `UNVERIFIED` is a legitimate, useful value;
   a guess presented as fact is not.
+- The profile is **pinned**: `Pinned at commit: <sha> · <date>`. Entries are trusted while
+  HEAD matches the pin; `check.sh` fails a pin that is not in the repository's history.
 - Every gate names its failure message, so the next agent recognizes it.
 - Every conflict with this skill is listed explicitly, with the repository's rule prevailing.
 - Keep it to what a new agent needs in its first ten minutes. It is a briefing, not a manual.
@@ -101,6 +126,8 @@ Write [`repo-profile.md`](repo-profile.md) from the template. Rules:
 ## Re-reconciling
 
 Reconcile is cheap and safe to re-run. Re-run it when: you switch repositories; CI or a gate
-changed; a command in the profile failed; the profile is older than the work; or you are about
-to rely on a profile entry you have not verified this session. Updating the profile is part of
-normal work — a stale profile is a false claim, which is the thing this skill forbids.
+changed; a command in the profile failed; or the repository's structure changed. Between
+reconciles the **commit pin** governs: trust entries while HEAD matches the pin; once HEAD
+has moved, re-verify the entries you are about to rely on (`check.sh` warns on exactly
+this). Updating the profile is part of normal work — a stale profile silently relied on is a
+false claim, which is the thing this skill forbids.
