@@ -34,7 +34,7 @@ then act with what you found.*
 ## Install into a repository
 
 ```bash
-git clone <this repo> ~/Projects/engineering-doctrine
+git clone https://github.com/danielrod36/engineering-doctrine ~/Projects/engineering-doctrine
 ~/Projects/engineering-doctrine/install.sh /path/to/target-repo
 ```
 
